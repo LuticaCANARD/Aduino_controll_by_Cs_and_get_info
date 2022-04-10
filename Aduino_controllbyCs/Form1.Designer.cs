@@ -40,6 +40,7 @@
             this.writeSignal = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.getSignal = new System.Windows.Forms.RichTextBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -106,9 +107,17 @@
             resources.ApplyResources(this.getSignal, "getSignal");
             this.getSignal.Name = "getSignal";
             // 
+            // button2
+            // 
+            resources.ApplyResources(this.button2, "button2");
+            this.button2.Name = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.getSignal);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -121,6 +130,8 @@
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBox1);
             this.Name = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load_1);
+            this.Leave += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -139,6 +150,7 @@
         private System.Windows.Forms.TextBox writeSignal;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RichTextBox getSignal;
+        private System.Windows.Forms.Button button2;
     }
 }
 

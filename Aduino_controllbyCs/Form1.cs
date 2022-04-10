@@ -13,6 +13,7 @@ namespace Aduino_controllbyCs
 {
     public partial class Form1 : Form
     {
+        
         private SerialPort arduinoSerial;
         private string[] frequeny = { "9600","19200","4800" };
         public Form1()
@@ -92,6 +93,7 @@ namespace Aduino_controllbyCs
              arduinoSerial.Write(datas, 0, datas.Length);
              label5.Text = mes;*/
             arduinoSerial.WriteLine(writeSignal.Text + "\n");
+            
         }
         private void get_byte()
         {
@@ -119,6 +121,37 @@ namespace Aduino_controllbyCs
                     getSignal.Text += string.Format("{0} ", resive_datap);
                 }
            
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+
+        }
+        List<float[]> tems = new List<float[]>();
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string texts = getSignal.Text;
+            string[] str_log = texts.Split('\n');
+            for (int i =0; i < str_log.Length; i++)
+            {
+                if(str_log[i] =="humid :")
+                {
+                    float[] items = new float[] { float.Parse(str_log[i + 1]), float.Parse(str_log[i + 2])};
+                    tems.Add(items);
+                }
+            }
+            using (System.IO.StreamWriter csv = new System.IO.StreamWriter(@"run.csv"))
+            {
+                
+                while (tems.Count > 0)
+                {
+                    csv.WriteLine("{0},{1}", tems[0][0],tems[0][1]);
+                    tems.RemoveAt(0);
+                }
+ 
+                
+            }
         }
     }
 }
