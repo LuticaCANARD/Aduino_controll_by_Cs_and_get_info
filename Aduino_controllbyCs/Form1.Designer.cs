@@ -95,6 +95,7 @@
             resources.ApplyResources(this.writeSignal, "writeSignal");
             this.writeSignal.Name = "writeSignal";
             this.writeSignal.UseWaitCursor = true;
+            this.writeSignal.TextChanged += new System.EventHandler(this.writeSignal_TextChanged);
             // 
             // label5
             // 

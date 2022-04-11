@@ -15,7 +15,7 @@ namespace Aduino_controllbyCs
     {
         
         private SerialPort arduinoSerial;
-        private string[] frequeny = { "9600","19200","4800" };
+        private string[] frequeny = { "9600","19200", "38400", "4800" };
         public Form1()
         {
             InitializeComponent();
@@ -88,10 +88,6 @@ namespace Aduino_controllbyCs
             {
                 return;
             }
-            /* string mes = writeSignal.Text + "\n";
-             byte[] datas = strToByte(mes); //'1' 전송 뒤에 개행문자 \n을 필수로 붙혀야 함
-             arduinoSerial.Write(datas, 0, datas.Length);
-             label5.Text = mes;*/
             arduinoSerial.WriteLine(writeSignal.Text + "\n");
             
         }
@@ -133,25 +129,39 @@ namespace Aduino_controllbyCs
         {
             string texts = getSignal.Text;
             string[] str_log = texts.Split('\n');
+            //getSignal.Text += System.IO.Directory.GetCurrentDirectory();
             for (int i =0; i < str_log.Length; i++)
             {
-                if(str_log[i] =="humid :")
+                if(str_log[i].Contains("humid")&&str_log[i].Contains("temperature") &&!str_log[i].Contains("okay"))
                 {
-                    float[] items = new float[] { float.Parse(str_log[i + 1]), float.Parse(str_log[i + 2])};
+                    List<string> spt_list = new List<string>(str_log[i].Split(':'));
+                    float[] items = new float[] { float.Parse(spt_list[1]), float.Parse(spt_list[3]) };
                     tems.Add(items);
                 }
             }
-            using (System.IO.StreamWriter csv = new System.IO.StreamWriter(@"run.csv"))
+            try
             {
-                
-                while (tems.Count > 0)
+                using (System.IO.StreamWriter csv = new System.IO.StreamWriter(@"run.csv"))
                 {
-                    csv.WriteLine("{0},{1}", tems[0][0],tems[0][1]);
-                    tems.RemoveAt(0);
+                    csv.WriteLine("humid , temperature");
+                    while (tems.Count > 0)
+                    {
+                        csv.WriteLine("{0},{1}", tems[0][0], tems[0][1]);
+                        tems.RemoveAt(0);
+                    }
+
+
                 }
- 
-                
+            }catch (Exception ex)
+            {
+                getSignal.Text += ex.Message;
             }
+            
+        }
+
+        private void writeSignal_TextChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }
